@@ -72,7 +72,8 @@ response = client.orders.create({
   total: 50,
   currency: 'USD',
   order_id: '1994',
-  finalization_date: '2017-08-02T19:26:08Z'
+  finalization_date: '2017-08-02T19:26:08Z',
+  btn_ref: 'srctok-XXX'
 })
 
 puts response 
