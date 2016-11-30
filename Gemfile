@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gemspec
 
 group :development do
-  gem 'rake'
-  gem 'test-unit'
-  gem 'webmock'
+  gem 'rake', '10.4.2'
+  gem 'test-unit', '3.1.5'
+  gem 'webmock', '2.1.0'
 end
