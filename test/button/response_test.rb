@@ -12,7 +12,7 @@ class ResponseTest < Test::Unit::TestCase
   end
 
   def test_to_hash
-    hash = { :a => 1, :b => 'two' }
+    hash = { a: 1, b: 'two' }
     response = Button::Response.new(hash)
     assert_equal(response.to_hash, a: 1, b: 'two')
   end

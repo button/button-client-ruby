@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require "irb"
+require 'irb'
 require "#{File.expand_path('../../lib', __FILE__)}/button.rb"
 
 IRB.start
