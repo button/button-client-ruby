@@ -1,6 +1,15 @@
 require File.expand_path('../../../test_helper', __FILE__)
 
 class ResourceTest < Test::Unit::TestCase
+  def setup
+    @resource = Button::Resource.new('sk-XXX', {
+      secure: true,
+      timeout: nil,
+      hostname: 'api.usebutton.com',
+      port: 443
+    })
+  end
+
   def teardown
     WebMock.reset!
   end
@@ -10,7 +19,7 @@ class ResourceTest < Test::Unit::TestCase
       .to_return(status: 200, body: '')
 
     assert_raises(Button::ButtonClientError) do
-      Button::Resource.new('sk-XXX').api_get('/v1/bloop')
+      @resource.api_get('/v1/bloop')
     end
   end
 
@@ -19,7 +28,7 @@ class ResourceTest < Test::Unit::TestCase
       .to_return(status: 200, body: nil)
 
     assert_raises(Button::ButtonClientError) do
-      Button::Resource.new('sk-XXX').api_get('/v1/bloop')
+      @resource.api_get('/v1/bloop')
     end
   end
 
@@ -28,7 +37,7 @@ class ResourceTest < Test::Unit::TestCase
       .to_return(status: 200, body: 'invalid json')
 
     assert_raises(Button::ButtonClientError) do
-      Button::Resource.new('sk-XXX').api_get('/v1/bloop')
+      @resource.api_get('/v1/bloop')
     end
   end
 
@@ -37,7 +46,7 @@ class ResourceTest < Test::Unit::TestCase
       .to_return(status: 404, body: '{ "meta": { "status": "error" }, "error": { "message": "bloop" } }')
 
     assert_raises(Button::ButtonClientError.new('bloop')) do
-      Button::Resource.new('sk-XXX').api_get('/v1/bloop')
+      @resource.api_get('/v1/bloop')
     end
   end
 
@@ -46,7 +55,7 @@ class ResourceTest < Test::Unit::TestCase
       .to_return(status: 404, body: '{ "meta": { "status": "wat" }, "error": { "message": "bloop" } }')
 
     assert_raises(Button::ButtonClientError.new('Unknown status: wat')) do
-      Button::Resource.new('sk-XXX').api_get('/v1/bloop')
+      @resource.api_get('/v1/bloop')
     end
   end
 
@@ -55,7 +64,7 @@ class ResourceTest < Test::Unit::TestCase
       .to_return(status: 404, body: '{}')
 
     assert_raises(Button::ButtonClientError) do
-      Button::Resource.new('sk-XXX').api_get('/v1/bloop')
+      @resource.api_get('/v1/bloop')
     end
 
     WebMock.reset!
@@ -64,7 +73,7 @@ class ResourceTest < Test::Unit::TestCase
       .to_return(status: 404, body: '{ "meta": "wat" }')
 
     assert_raises(Button::ButtonClientError) do
-      Button::Resource.new('sk-XXX').api_get('/v1/bloop')
+      @resource.api_get('/v1/bloop')
     end
 
     WebMock.reset!
@@ -73,7 +82,7 @@ class ResourceTest < Test::Unit::TestCase
       .to_return(status: 404, body: '{ "meta": { "status": "error" }, "error": "wat" }')
 
     assert_raises(Button::ButtonClientError) do
-      Button::Resource.new('sk-XXX').api_get('/v1/bloop')
+      @resource.api_get('/v1/bloop')
     end
 
     WebMock.reset!
@@ -83,7 +92,7 @@ class ResourceTest < Test::Unit::TestCase
     stub_request(:get, 'https://api.usebutton.com/v1/bloop')
       .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": { "a": 1 } }')
 
-    response = Button::Resource.new('sk-XXX').api_get('/v1/bloop')
+    response = @resource.api_get('/v1/bloop')
     assert_equal(response.a, 1)
   end
 
@@ -92,7 +101,7 @@ class ResourceTest < Test::Unit::TestCase
       .with(body: '{"a":1}')
       .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": { "a": 1 } }')
 
-    response = Button::Resource.new('sk-XXX').api_post('/v1/bloop', a: 1)
+    response = @resource.api_post('/v1/bloop', a: 1)
     assert_equal(response.a, 1)
   end
 
@@ -100,7 +109,23 @@ class ResourceTest < Test::Unit::TestCase
     stub_request(:delete, 'https://api.usebutton.com/v1/bloop/1')
       .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": null }')
 
-    response = Button::Resource.new('sk-XXX').api_delete('/v1/bloop/1')
+    response = @resource.api_delete('/v1/bloop/1')
     assert_equal(response.to_hash, {})
+  end
+
+  def test_uses_config
+    stub_request(:get, 'http://localhost:8080/v1/bloop')
+      .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": { "a": 1 } }')
+
+    resource = Button::Resource.new('sk-XXX', {
+      secure: false,
+      timeout: 1989,
+      hostname: 'localhost',
+      port: 8080
+    })
+
+    response = resource.api_get('/v1/bloop')
+    assert_equal(resource.timeout, 1989)
+    assert_equal(response.a, 1)
   end
 end

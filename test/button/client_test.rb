@@ -19,4 +19,31 @@ class ClientTest < Test::Unit::TestCase
     client = Button::Client.new('sk-XXX')
     assert_respond_to(client, :orders)
   end
+
+  def test_sets_default_config_parameters
+    client = Button::Client.new('sk-XXX')
+    assert_equal(client.orders.config, {
+      hostname: 'api.usebutton.com',
+      port: 443,
+      secure: true,
+      timeout: nil
+    })
+  end
+
+  def test_allows_config_overrides
+    config = {
+      hostname: 'localhost',
+      port: 8080,
+      secure: false,
+      timeout: 20
+    }
+
+    client = Button::Client.new('sk-XXX', config)
+    assert_equal(client.orders.config, config)
+  end
+
+  def test_sets_default_port_properly
+    client = Button::Client.new('sk-XXX', secure: false)
+    assert_equal(client.orders.config[:port], 80)
+  end
 end

@@ -1,6 +1,15 @@
 require File.expand_path('../../../test_helper', __FILE__)
 
 class OrdersTest < Test::Unit::TestCase
+  def setup
+    @orders = Button::Orders.new('sk-XXX', {
+      secure: true,
+      timeout: nil,
+      hostname: 'api.usebutton.com',
+      port: 443
+    })
+  end
+
   def teardown
     WebMock.reset!
   end
@@ -10,7 +19,7 @@ class OrdersTest < Test::Unit::TestCase
       .with(headers: { Authorization: 'Basic c2stWFhYOg==' })
       .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": { "a": 1 } }')
 
-    response = Button::Orders.new('sk-XXX').get('btnorder-XXX')
+    response = @orders.get('btnorder-XXX')
     assert_equal(response.a, 1)
   end
 
@@ -19,7 +28,7 @@ class OrdersTest < Test::Unit::TestCase
       .with(body: '{"a":1}', headers: { Authorization: 'Basic c2stWFhYOg==' })
       .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": { "a": 1 } }')
 
-    response = Button::Orders.new('sk-XXX').create(a: 1)
+    response = @orders.create(a: 1)
     assert_equal(response.a, 1)
   end
 
@@ -28,7 +37,7 @@ class OrdersTest < Test::Unit::TestCase
       .with(body: '{"a":1}', headers: { Authorization: 'Basic c2stWFhYOg==' })
       .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": { "a": 1 } }')
 
-    response = Button::Orders.new('sk-XXX').update('btnorder-XXX', a: 1)
+    response = @orders.update('btnorder-XXX', a: 1)
     assert_equal(response.a, 1)
   end
 
@@ -37,7 +46,7 @@ class OrdersTest < Test::Unit::TestCase
       .with(headers: { Authorization: 'Basic c2stWFhYOg==' })
       .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": null }')
 
-    response = Button::Orders.new('sk-XXX').delete('btnorder-XXX')
+    response = @orders.delete('btnorder-XXX')
     assert_equal(response.to_hash, {})
   end
 end

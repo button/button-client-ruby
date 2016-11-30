@@ -24,14 +24,21 @@ module Button
   # end
   #
   class Resource
-    HOST = 'api.usebutton.com'.freeze
-    PORT = 443
     USER_AGENT = "Button/#{Button::VERSION} ruby/#{RUBY_VERSION}".freeze
 
-    def initialize(api_key)
+    def initialize(api_key, config)
       @api_key = api_key
-      @http = Net::HTTP.new(HOST, PORT)
-      @http.use_ssl = true
+      @config = config
+      @http = Net::HTTP.new(config[:hostname], config[:port])
+      @http.use_ssl = config[:secure]
+
+      if not config[:timeout].nil?
+        @http.read_timeout = config[:timeout]
+      end
+    end
+
+    def timeout
+      @http.read_timeout
     end
 
     # Performs an HTTP GET at the provided path.
@@ -96,6 +103,7 @@ module Button
       raise ButtonClientError, "Invalid response: #{parsed}"
     end
 
+    attr_accessor :config
     private :api_request, :process_response
   end
 end
