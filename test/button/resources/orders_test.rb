@@ -8,6 +8,11 @@ class OrdersTest < Test::Unit::TestCase
       hostname: 'api.usebutton.com',
       port: 443
     })
+
+    @headers = {
+      'Authorization' => 'Basic c2stWFhYOg==',
+      'User-Agent' => 'Button/1.1.0 ruby/1.9.3'
+    }
   end
 
   def teardown
@@ -16,7 +21,7 @@ class OrdersTest < Test::Unit::TestCase
 
   def test_get
     stub_request(:get, 'https://api.usebutton.com/v1/order/btnorder-XXX')
-      .with(headers: { Authorization: 'Basic c2stWFhYOg==' })
+      .with(headers: @headers)
       .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": { "a": 1 } }')
 
     response = @orders.get('btnorder-XXX')
@@ -25,7 +30,7 @@ class OrdersTest < Test::Unit::TestCase
 
   def test_create
     stub_request(:post, 'https://api.usebutton.com/v1/order')
-      .with(body: '{"a":1}', headers: { Authorization: 'Basic c2stWFhYOg==' })
+      .with(body: '{"a":1}', headers: @headers)
       .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": { "a": 1 } }')
 
     response = @orders.create(a: 1)
@@ -34,7 +39,7 @@ class OrdersTest < Test::Unit::TestCase
 
   def test_update
     stub_request(:post, 'https://api.usebutton.com/v1/order/btnorder-XXX')
-      .with(body: '{"a":1}', headers: { Authorization: 'Basic c2stWFhYOg==' })
+      .with(body: '{"a":1}', headers: @headers)
       .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": { "a": 1 } }')
 
     response = @orders.update('btnorder-XXX', a: 1)
@@ -43,7 +48,7 @@ class OrdersTest < Test::Unit::TestCase
 
   def test_delete
     stub_request(:delete, 'https://api.usebutton.com/v1/order/btnorder-XXX')
-      .with(headers: { Authorization: 'Basic c2stWFhYOg==' })
+      .with(headers: @headers)
       .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": null }')
 
     response = @orders.delete('btnorder-XXX')
