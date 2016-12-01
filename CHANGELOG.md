@@ -1,2 +1,8 @@
+1.1.1 December 1, 2016
+ - Fix User-Agent bug
+
+1.1.0 December 1, 2016
+  - Add client config options
+
 1.0.0 August 11, 2016
   - Initial Release
