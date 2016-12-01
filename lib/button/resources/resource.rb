@@ -71,10 +71,10 @@ module Button
 
     def api_request(request, body = nil)
       request.basic_auth(@api_key, '')
-      request.add_field('User-Agent', USER_AGENT)
+      request['User-Agent'] = USER_AGENT
 
       if !body.nil? && body.respond_to?(:to_json)
-        request.add_field('Content-Type', 'application/json')
+        request['Content-Type'] = 'application/json'
         request.body = body.to_json
       end
 
