@@ -11,7 +11,7 @@ class OrdersTest < Test::Unit::TestCase
 
     @headers = {
       'Authorization' => 'Basic c2stWFhYOg==',
-      'User-Agent' => 'Button/1.1.0 ruby/1.9.3'
+      'User-Agent' => Button::Resource::USER_AGENT
     }
   end
 
