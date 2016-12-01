@@ -53,6 +53,28 @@ puts response.to_hash()
 
 n.b. the keys of the response hash will always be symbols. 
 
+## Configuration
+
+You may optionally supply a config argument with your API key:
+
+```ruby
+require 'button'
+
+client = Button::Client.new('sk-XXX', {
+  hostname: 'api.testsite.com',
+  port: 3000,
+  secure: false,
+  timeout: 5 # seconds
+})
+```
+
+The supported options are as follows:
+
+* `hostname`: Defaults to `api.usebutton.com`.
+* `port`: Defaults to `443` if `config.secure`, else defaults to `80`.
+* `secure`: Whether or not to use HTTPS. Defaults to True.  **N.B: Button's API is only exposed through HTTPS. This option is provided purely as a convenience for testing and development.**
+* `timeout`: The time in seconds that may elapse before network requests abort. Defaults to `nil`.
+
 ## Resources
 
 We currently expose only one resource to manage, `Orders`. 

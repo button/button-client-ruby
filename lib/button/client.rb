@@ -16,14 +16,28 @@ module Button
   # puts client.orders.get("btnorder-XXX")
   #
   class Client
-    def initialize(api_key)
+    def initialize(api_key, config = {})
       if api_key.nil? || api_key.empty?
         raise ButtonClientError, NO_API_KEY_MESSAGE
       end
 
-      @orders = Orders.new(api_key)
+      config_with_defaults = merge_defaults(config)
+
+      @orders = Orders.new(api_key, config_with_defaults)
+    end
+
+    def merge_defaults(config)
+      secure = config.fetch(:secure, true)
+
+      return {
+        secure: secure,
+        timeout: config.fetch(:timeout, nil),
+        hostname: config.fetch(:hostname, 'api.usebutton.com'),
+        port: config.fetch(:port, secure ? 443 : 80)
+      }
     end
 
     attr_reader :orders
+    private :merge_defaults
   end
 end
