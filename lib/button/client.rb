@@ -2,7 +2,7 @@ require 'button/resources/orders'
 require 'button/errors'
 
 NO_API_KEY_MESSAGE = 'Must provide a Button API key.  Find yours at '\
-  'https://app.usebutton.com/settings/organization'
+  'https://app.usebutton.com/settings/organization'.freeze
 
 module Button
   # Client is the top-level interface for the Button API.  It exposes one
@@ -29,7 +29,7 @@ module Button
     def merge_defaults(config)
       secure = config.fetch(:secure, true)
 
-      return {
+      {
         secure: secure,
         timeout: config.fetch(:timeout, nil),
         hostname: config.fetch(:hostname, 'api.usebutton.com'),

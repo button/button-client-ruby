@@ -2,12 +2,13 @@ require File.expand_path('../../../test_helper', __FILE__)
 
 class ResourceTest < Test::Unit::TestCase
   def setup
-    @resource = Button::Resource.new('sk-XXX', {
+    @resource = Button::Resource.new(
+      'sk-XXX',
       secure: true,
       timeout: nil,
       hostname: 'api.usebutton.com',
       port: 443
-    })
+    )
 
     @headers = {
       'Authorization' => 'Basic c2stWFhYOg==',
@@ -134,12 +135,13 @@ class ResourceTest < Test::Unit::TestCase
       .with(headers: @headers)
       .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": { "a": 1 } }')
 
-    resource = Button::Resource.new('sk-XXX', {
+    resource = Button::Resource.new(
+      'sk-XXX',
       secure: false,
       timeout: 1989,
       hostname: 'localhost',
       port: 8080
-    })
+    )
 
     response = resource.api_get('/v1/bloop')
     assert_equal(resource.timeout, 1989)
