@@ -1,5 +1,5 @@
 1.2.0 January 4, 2017
-  - Add `Button::Utils::is_webhook_authentic` function
+  - Add `Button::Utils::webhook_authentic?` function
 
 1.1.1 December 1, 2016
  - Fix User-Agent bug
