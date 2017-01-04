@@ -144,14 +144,14 @@ puts response
 
 Utils houses generic helpers useful in a Button Integration.
 
-### #is_webhook_authentic
+### #webhook_authentic?
 
 Used to verify that requests sent to a webhook endpoint are from Button and that their payload can be trusted. Returns `true` if a webhook request body matches the sent signature and `false` otherwise. See [Webhook Security](https://www.usebutton.com/developers/webhooks/#security) for more details.
 
 ```ruby
 require 'button'
 
-Button::Utils::is_webhook_authentic(
+Button::Utils::webhook_authentic?(
   ENV['WEBHOOK_SECRET'],
   request_body,
   request_headers.fetch('X-Button-Signature')
@@ -163,4 +163,5 @@ Button::Utils::is_webhook_authentic(
 * Building the gem: `gem build button.gemspec`
 * Installing locally: `gem install ./button-X.Y.Z.gem`
 * Installing development dependencies: `bundle install`
+* Running linter: `rake lint`
 * Running tests: `bundle exec rake`

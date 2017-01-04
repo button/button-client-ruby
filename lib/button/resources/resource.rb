@@ -32,9 +32,8 @@ module Button
       @http = Net::HTTP.new(config[:hostname], config[:port])
       @http.use_ssl = config[:secure]
 
-      if not config[:timeout].nil?
-        @http.read_timeout = config[:timeout]
-      end
+      return if config[:timeout].nil?
+      @http.read_timeout = config[:timeout]
     end
 
     def timeout

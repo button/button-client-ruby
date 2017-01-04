@@ -2,12 +2,13 @@ require File.expand_path('../../../test_helper', __FILE__)
 
 class OrdersTest < Test::Unit::TestCase
   def setup
-    @orders = Button::Orders.new('sk-XXX', {
+    @orders = Button::Orders.new(
+      'sk-XXX',
       secure: true,
       timeout: nil,
       hostname: 'api.usebutton.com',
       port: 443
-    })
+    )
 
     @headers = {
       'Authorization' => 'Basic c2stWFhYOg==',

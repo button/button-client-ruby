@@ -22,12 +22,13 @@ class ClientTest < Test::Unit::TestCase
 
   def test_sets_default_config_parameters
     client = Button::Client.new('sk-XXX')
-    assert_equal(client.orders.config, {
+    assert_equal(
+      client.orders.config,
       hostname: 'api.usebutton.com',
       port: 443,
       secure: true,
       timeout: nil
-    })
+    )
   end
 
   def test_allows_config_overrides
