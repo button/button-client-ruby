@@ -13,7 +13,7 @@ module Button
         request_body
       )
 
-      return sent_signature == computed_signature
+      sent_signature == computed_signature
     end
 
     module_function :is_webhook_authentic
