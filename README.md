@@ -187,7 +187,7 @@ end
 
 ## Response
 
-The Button::Response class will be returned by all API methods.  It is used to read the respone data as well as collect any meta data about the response, like potential next and previous cursors to more data in a paged endpoint.
+An instance of the `Button::Response` class will be returned by all API methods.  It is used to read the response data as well as collect any meta data about the response, like potential next and previous cursors to more data in a paged endpoint.
 
 ### Methods
 
