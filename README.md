@@ -41,7 +41,7 @@ rescue Button::ButtonClientError => error
   puts error
 end
 
-puts response 
+puts response
 # => Button::Response(button_order_id: btnorder-XXX, total: 60, ... )
 
 puts response.button_order_id
@@ -98,7 +98,7 @@ response = client.orders.create({
   btn_ref: 'srctok-XXX'
 })
 
-puts response 
+puts response
 # => Button::Response(button_order_id: btnorder-XXX, total: 50, ... )
 ```
 
@@ -111,9 +111,10 @@ client = Button::Client.new('sk-XXX')
 
 response = client.orders.get('btnorder-XXX')
 
-puts response 
+puts response
 # => Button::Response(button_order_id: btnorder-XXX, total: 50, ... )
 ```
+
 ##### Update
 
 ```ruby
@@ -123,7 +124,7 @@ client = Button::Client.new('sk-XXX')
 
 response = client.orders.update('btnorder-XXX', total: 60)
 
-puts response 
+puts response
 # => Button::Response(button_order_id: btnorder-XXX, total: 60, ... )
 ```
 
@@ -139,6 +140,82 @@ response = client.orders.delete('btnorder-XXX')
 puts response
 # => Button::Response()
 ```
+
+### Accounts
+
+##### all
+
+```ruby
+require 'button'
+
+client = Button::Client.new('sk-XXX')
+
+response = client.accounts.all
+
+puts response
+# => Button::Response(2 elements)
+```
+
+##### transactions
+
+_n.b. transactions is a paged endpoint.  Take care to inspect `response.next_cursor` in case there's more data to be read._
+
+Along with the required account id, you may also pass the following optional arguments as a Hash as the second argument:
+
+* `:cursor` (String): An API cursor to fetch a specific set of results.
+* `:start` (ISO-8601 datetime String): Fetch transactions after this time.
+* `:end` (ISO-8601 datetime String): Fetch transactions before this time.
+
+```ruby
+require 'button'
+
+client = Button::Client.new('sk-XXX')
+
+response = client.accounts.transactions('acc-XXX')
+cursor = response.next_cursor
+
+puts response
+# => Button::Response(75 elements)
+
+# Unpage all results
+#
+while !cursor.nil? do
+  response = client.accounts.transactions('acc-XXX', cursor: cursor)
+  cursor = response.next_cursor
+end
+```
+
+## Response
+
+The Button::Response class will be returned by all API methods.  It is used to read the respone data as well as collect any meta data about the response, like potential next and previous cursors to more data in a paged endpoint.
+
+### Methods
+
+#### data
+
+returns the underlying response data
+
+```ruby
+require 'button'
+
+client = Button::Client.new('sk-XXX')
+
+response = client.accounts.all
+
+puts response
+# => Button::Response(2 elements)
+
+puts response.data
+# => [ { ... }, { ... } ]
+```
+
+#### next_cursor
+
+For any paged resource, `#next_cursor` will return a cursor to supply for the next page of results.  If `#next_cursor` returns `nil`, then there are no more results.
+
+#### prev_cursor
+
+For any paged resource, `#prev_cursor` will return a cursor to supply for the previous page of results.  If `#prev_cursor` returns `nil`, then there are no more results, err.. backwards.
 
 ## Utils
 

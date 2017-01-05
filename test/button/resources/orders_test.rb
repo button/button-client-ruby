@@ -26,7 +26,7 @@ class OrdersTest < Test::Unit::TestCase
       .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": { "a": 1 } }')
 
     response = @orders.get('btnorder-XXX')
-    assert_equal(response.a, 1)
+    assert_equal(response.data[:a], 1)
   end
 
   def test_create
@@ -35,7 +35,7 @@ class OrdersTest < Test::Unit::TestCase
       .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": { "a": 1 } }')
 
     response = @orders.create(a: 1)
-    assert_equal(response.a, 1)
+    assert_equal(response.data[:a], 1)
   end
 
   def test_update
@@ -44,7 +44,7 @@ class OrdersTest < Test::Unit::TestCase
       .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": { "a": 1 } }')
 
     response = @orders.update('btnorder-XXX', a: 1)
-    assert_equal(response.a, 1)
+    assert_equal(response.data[:a], 1)
   end
 
   def test_delete
@@ -53,6 +53,6 @@ class OrdersTest < Test::Unit::TestCase
       .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": null }')
 
     response = @orders.delete('btnorder-XXX')
-    assert_equal(response.to_hash, {})
+    assert_equal(response.data, nil)
   end
 end
