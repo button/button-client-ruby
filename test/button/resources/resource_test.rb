@@ -108,7 +108,16 @@ class ResourceTest < Test::Unit::TestCase
       .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": { "a": 1 } }')
 
     response = @resource.api_get('/v1/bloop')
-    assert_equal(response.a, 1)
+    assert_equal(response.data[:a], 1)
+  end
+
+  def test_gets_a_resource_with_query
+    stub_request(:get, 'https://api.usebutton.com/v1/bloop?a=1&b=bloop')
+      .with(headers: @headers)
+      .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": { "a": 1 } }')
+
+    response = @resource.api_get('/v1/bloop', 'a' => 1, 'b' => 'bloop')
+    assert_equal(response.data[:a], 1)
   end
 
   def test_posts_a_resource
@@ -118,7 +127,7 @@ class ResourceTest < Test::Unit::TestCase
       .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": { "a": 1 } }')
 
     response = @resource.api_post('/v1/bloop', a: 1)
-    assert_equal(response.a, 1)
+    assert_equal(response.data[:a], 1)
   end
 
   def test_deletes_a_resource
@@ -127,7 +136,7 @@ class ResourceTest < Test::Unit::TestCase
       .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": null }')
 
     response = @resource.api_delete('/v1/bloop/1')
-    assert_equal(response.to_hash, {})
+    assert_equal(response.data, nil)
   end
 
   def test_uses_config
@@ -145,6 +154,6 @@ class ResourceTest < Test::Unit::TestCase
 
     response = resource.api_get('/v1/bloop')
     assert_equal(resource.timeout, 1989)
-    assert_equal(response.a, 1)
+    assert_equal(response.data[:a], 1)
   end
 end

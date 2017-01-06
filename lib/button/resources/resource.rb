@@ -1,3 +1,4 @@
+require 'uri'
 require 'net/http'
 require 'json'
 
@@ -43,10 +44,13 @@ module Button
     # Performs an HTTP GET at the provided path.
     #
     # @param [String] path the HTTP path
+    # @param [Hash=] query optional query params to send
     # @return [Button::Response] the API response
     #
-    def api_get(path)
-      api_request(Net::HTTP::Get.new(path))
+    def api_get(path, query = nil)
+      uri = URI(path)
+      uri.query = URI.encode_www_form(query) if query
+      api_request(Net::HTTP::Get.new(uri.to_s))
     end
 
     # Performs an HTTP POST at the provided path.
@@ -94,9 +98,11 @@ module Button
 
       raise ButtonClientError, "Invalid response: #{parsed}" unless parsed[:meta].is_a?(Hash)
 
-      status = parsed[:meta][:status]
+      meta = parsed[:meta]
+      status = meta[:status]
+      response_data = parsed.fetch(:object, parsed.fetch(:objects, {}))
 
-      return Response.new(parsed[:object]) if status == 'ok'
+      return Response.new(meta, response_data) if status == 'ok'
       raise ButtonClientError, "Unknown status: #{status}" unless status == 'error'
       raise ButtonClientError, parsed[:error][:message] if parsed[:error].is_a?(Hash)
       raise ButtonClientError, "Invalid response: #{parsed}"

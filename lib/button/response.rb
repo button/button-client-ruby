@@ -1,3 +1,6 @@
+require 'cgi'
+require 'uri'
+
 module Button
   # Response is a simple proxy class for easy value unpacking from an API
   # response.  It is constructed with a hash and proxies method calls on the
@@ -5,33 +8,59 @@ module Button
   #
   # ## Usage
   #
-  # response = Button::Response.new({ :a => 1, :b => "two" })
-  # puts response.a
-  # puts response.to_hash
+  # response = Button::Response.new({
+  #   prev: 'https://bloop.net/?cursor=1989',
+  #   next: 'https://bloop.net/?cursor=1991'
+  # }, :a => 1, :b => "two")
+  #
+  # puts response.data
+  # puts response.next_cursor
+  # puts response.prev_cursor
   #
   class Response
-    def initialize(attrs)
-      @attrs = attrs || {}
+    def initialize(meta, response_data)
+      @meta = meta
+      @response_data = response_data
     end
 
     def to_s
-      values = @attrs.reduce([]) do |acc, (name, value)|
-        acc + ["#{name}: #{value || 'nil'}"]
-      end.join(', ')
+      repr = ''
 
-      "Button::Response(#{values})"
+      if @response_data.is_a?(Hash)
+        repr = @response_data.reduce([]) do |acc, (name, value)|
+          acc + ["#{name}: #{value || 'nil'}"]
+        end.join(', ')
+      elsif @response_data.is_a?(Array)
+        repr = "#{@response_data.size} elements"
+      end
+
+      "Button::Response(#{repr})"
     end
 
-    def to_hash
-      @attrs
+    def data
+      @response_data
     end
 
-    def method_missing(attr)
-      @attrs[attr] || super
+    def next_cursor
+      Response.format_cursor(@meta.fetch(:next, nil))
     end
 
-    def respond_to_missing?(method_name, include_private = false)
-      @attrs.key?(method_name) || super
+    def prev_cursor
+      Response.format_cursor(@meta.fetch(:prev, nil))
+    end
+
+    class << self
+      def format_cursor(cursor_url)
+        return nil unless cursor_url
+
+        parsed = URI(cursor_url)
+        return nil unless parsed.query
+
+        query = CGI.parse(parsed.query)
+        cursor = query.fetch('cursor', [])
+
+        cursor.empty? ? nil : cursor[0]
+      end
     end
   end
 end
