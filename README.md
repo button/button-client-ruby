@@ -28,7 +28,7 @@ client = Button::Client.new('sk-XXX')
 
 The client will always attempt to raise a `Button::ButtonClientError` in an error condition. 
 
-All API requests will return a `Button::Response` instance, which supports accessing data properties from the API response as methods.  To access the raw response hash, use `#to_hash`.  For instance:
+All API requests will return a `Button::Response` instance.  To access the response data, invoke `#data`.
 
 ```ruby
 require 'button'
@@ -44,14 +44,14 @@ end
 puts response
 # => Button::Response(button_order_id: btnorder-XXX, total: 60, ... )
 
-puts response.button_order_id
-# => btnorder-XXX
-
-puts response.to_hash()
+puts response.data
 # => {:button_order_id=>'btnorder-29de0b1436075ea6', :total=>60, ... }
+
+puts response.data[:button_order_id]
+# => btnorder-XXX
 ```
 
-n.b. the keys of the response hash will always be symbols. 
+_n.b. the keys of the response hash will always be symbols._
 
 ## Configuration
 
@@ -77,7 +77,75 @@ The supported options are as follows:
 
 ## Resources
 
-We currently expose only one resource to manage, `Orders`. 
+We currently expose the following resources to manage:
+
+* [`Accounts`](#accounts)
+* [`Merchants`](#merchants)
+* [`Orders`](#orders)
+
+### Accounts
+
+##### all
+
+```ruby
+require 'button'
+
+client = Button::Client.new('sk-XXX')
+
+response = client.accounts.all
+
+puts response
+# => Button::Response(2 elements)
+```
+
+##### transactions
+
+_n.b. transactions is a paged endpoint.  Take care to inspect `response.next_cursor` in case there's more data to be read._
+
+Along with the required account id, you may also pass the following optional arguments as a Hash as the second argument:
+
+* `:cursor` (String): An API cursor to fetch a specific set of results.
+* `:start` (ISO-8601 datetime String): Fetch transactions after this time.
+* `:end` (ISO-8601 datetime String): Fetch transactions before this time.
+
+```ruby
+require 'button'
+
+client = Button::Client.new('sk-XXX')
+
+response = client.accounts.transactions('acc-XXX')
+cursor = response.next_cursor
+
+puts response
+# => Button::Response(75 elements)
+
+# Unpage all results
+#
+while !cursor.nil? do
+  response = client.accounts.transactions('acc-XXX', cursor: cursor)
+  cursor = response.next_cursor
+end
+```
+
+### Merchants
+
+##### all
+
+You may also pass the following optional arguments as a Hash as the first argument:
+
+* `:status` (String): Status to filter by. One of ('approved', 'pending', or 'available')
+* `:currency` (ISO-4217 String): Fetch transactions after this time.
+
+```ruby
+require 'button'
+
+client = Button::Client.new('sk-XXX')
+
+response = client.merchants.all(status: 'pending', currency: 'GBP')
+
+puts response
+# => Button::Response(23 elements)
+```
 
 ### Orders
 
@@ -139,50 +207,6 @@ response = client.orders.delete('btnorder-XXX')
 
 puts response
 # => Button::Response()
-```
-
-### Accounts
-
-##### all
-
-```ruby
-require 'button'
-
-client = Button::Client.new('sk-XXX')
-
-response = client.accounts.all
-
-puts response
-# => Button::Response(2 elements)
-```
-
-##### transactions
-
-_n.b. transactions is a paged endpoint.  Take care to inspect `response.next_cursor` in case there's more data to be read._
-
-Along with the required account id, you may also pass the following optional arguments as a Hash as the second argument:
-
-* `:cursor` (String): An API cursor to fetch a specific set of results.
-* `:start` (ISO-8601 datetime String): Fetch transactions after this time.
-* `:end` (ISO-8601 datetime String): Fetch transactions before this time.
-
-```ruby
-require 'button'
-
-client = Button::Client.new('sk-XXX')
-
-response = client.accounts.transactions('acc-XXX')
-cursor = response.next_cursor
-
-puts response
-# => Button::Response(75 elements)
-
-# Unpage all results
-#
-while !cursor.nil? do
-  response = client.accounts.transactions('acc-XXX', cursor: cursor)
-  cursor = response.next_cursor
-end
 ```
 
 ## Response
