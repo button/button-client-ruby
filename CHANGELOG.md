@@ -1,3 +1,8 @@
+2.0.0 January 6, 2017
+  - Add `Accounts` resource
+  - Add `Merchants` resource
+  - Completely change `Button::Response` interface
+
 1.2.0 January 4, 2017
   - Add `Button::Utils::webhook_authentic?` function
 
