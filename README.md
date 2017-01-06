@@ -133,8 +133,8 @@ end
 
 You may also pass the following optional arguments as a Hash as the first argument:
 
-* `:status` (String): Status to filter by. One of ('approved', 'pending', or 'available')
-* `:currency` (ISO-4217 String): Fetch transactions after this time.
+* `:status` (String): Partnership status to filter by. One of ('approved', 'pending', or 'available')
+* `:currency` (ISO-4217 String): Currency code to filter returned rates by
 
 ```ruby
 require 'button'
