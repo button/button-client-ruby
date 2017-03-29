@@ -80,6 +80,7 @@ The supported options are as follows:
 We currently expose the following resources to manage:
 
 * [`Accounts`](#accounts)
+* [`Customers`](#customers)
 * [`Merchants`](#merchants)
 * [`Orders`](#orders)
 
@@ -125,6 +126,24 @@ while !cursor.nil? do
   response = client.accounts.transactions('acc-XXX', cursor: cursor)
   cursor = response.next_cursor
 end
+```
+
+### Customers
+
+##### Create
+
+```ruby
+require 'button'
+
+client = Button::Client.new('sk-XXX')
+
+response = client.customers.create({
+  id: 'internal-customer-id',
+  email_sha256: 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'
+})
+
+puts response
+# => Button::Response(id: internal-customer-id, email_sha256: a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3)
 ```
 
 ### Merchants
