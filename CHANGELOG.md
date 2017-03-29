@@ -1,5 +1,5 @@
 2.1.0 March 29, 2017
-	- Add `Customers` resource
+  - Add `Customers` resource
 
 2.0.0 January 6, 2017
   - Add `Accounts` resource
