@@ -1,3 +1,6 @@
+2.2.0 March 29, 2017
+  - Add GET support for `Customers` resource
+
 2.1.0 March 29, 2017
   - Add `Customers` resource
 

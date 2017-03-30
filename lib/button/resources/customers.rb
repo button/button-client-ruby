@@ -9,6 +9,15 @@ module Button
       '/v1/customers'
     end
 
+    # Gets a customer
+    #
+    # @param [String] customer_id the customer id
+    # @return [Button::Response] the API response
+    #
+    def get(customer_id)
+      api_get(path(customer_id))
+    end
+
     # Create a Customer
     #
     # @param [Hash] customer the customer to create
