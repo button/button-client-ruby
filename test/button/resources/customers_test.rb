@@ -20,6 +20,15 @@ class CustomersTest < Test::Unit::TestCase
     WebMock.reset!
   end
 
+  def test_get
+    stub_request(:get, 'https://api.usebutton.com/v1/customers/btncustomer-XXX')
+      .with(headers: @headers)
+      .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": { "a": 1 } }')
+
+    response = @customers.get('btncustomer-XXX')
+    assert_equal(response.data[:a], 1)
+  end
+
   def test_create
     stub_request(:post, 'https://api.usebutton.com/v1/customers')
       .with(body: '{"id":"1234"}', headers: @headers)

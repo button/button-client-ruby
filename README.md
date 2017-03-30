@@ -145,6 +145,18 @@ response = client.customers.create({
 puts response
 # => Button::Response(id: internal-customer-id, email_sha256: a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3)
 ```
+##### Get
+
+```ruby
+require 'button'
+
+client = Button::Client.new('sk-XXX')
+
+response = client.customers.get('btncustomer-XXX')
+
+puts response
+# => Button::Response(id: btncustomer-XXX, segments:[], ... )
+```
 
 ### Merchants
 
