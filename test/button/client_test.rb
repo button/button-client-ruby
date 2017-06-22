@@ -27,7 +27,8 @@ class ClientTest < Test::Unit::TestCase
       hostname: 'api.usebutton.com',
       port: 443,
       secure: true,
-      timeout: nil
+      timeout: nil,
+      api_version: nil
     )
   end
 
@@ -36,7 +37,8 @@ class ClientTest < Test::Unit::TestCase
       hostname: 'localhost',
       port: 8080,
       secure: false,
-      timeout: 20
+      timeout: 20,
+      api_version: '2017-01-01'
     }
 
     client = Button::Client.new('sk-XXX', config)

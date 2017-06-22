@@ -76,6 +76,10 @@ module Button
       request.basic_auth(@api_key, '')
       request['User-Agent'] = USER_AGENT
 
+      unless @config[:api_version].nil?
+        request['X-Button-API-Version'] = @config[:api_version]
+      end
+
       if !body.nil? && body.respond_to?(:to_json)
         request['Content-Type'] = 'application/json'
         request.body = body.to_json

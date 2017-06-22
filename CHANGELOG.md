@@ -1,3 +1,6 @@
+Current Version
+  - Add api_version to Client config
+
 2.2.0 March 29, 2017
   - Add GET support for `Customers` resource
 
