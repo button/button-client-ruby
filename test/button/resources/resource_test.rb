@@ -111,6 +111,30 @@ class ResourceTest < Test::Unit::TestCase
     assert_equal(response.data[:a], 1)
   end
 
+  def test_gets_a_resource_at_an_api_version
+    resource = Button::Resource.new(
+      'sk-XXX',
+      secure: true,
+      timeout: nil,
+      hostname: 'api.usebutton.com',
+      port: 443,
+      api_version: '2017-01-01'
+    )
+
+    headers = {
+      'Authorization' => 'Basic c2stWFhYOg==',
+      'User-Agent' => Button::Resource::USER_AGENT,
+      'X-Button-API-Version' => '2017-01-01'
+    }
+
+    stub_request(:get, 'https://api.usebutton.com/v1/bloop')
+      .with(headers: headers)
+      .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": { "a": 1 } }')
+
+    response = resource.api_get('/v1/bloop')
+    assert_equal(response.data[:a], 1)
+  end
+
   def test_gets_a_resource_with_query
     stub_request(:get, 'https://api.usebutton.com/v1/bloop?a=1&b=bloop')
       .with(headers: @headers)

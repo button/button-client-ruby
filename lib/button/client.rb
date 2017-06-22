@@ -39,7 +39,8 @@ module Button
         secure: secure,
         timeout: config.fetch(:timeout, nil),
         hostname: config.fetch(:hostname, 'api.usebutton.com'),
-        port: config.fetch(:port, secure ? 443 : 80)
+        port: config.fetch(:port, secure ? 443 : 80),
+        api_version: config.fetch(:api_version, nil)
       }
     end
 
