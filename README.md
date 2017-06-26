@@ -18,7 +18,7 @@ Please see the full [API Docs](https://www.usebutton.com/developers/api-referenc
 gem install button
 ```
 
-To create a client capable of making network requests, instantiate a  `Button::Client` with your [API key](https://app.usebutton.com/settings/organization). 
+To create a client capable of making network requests, instantiate a  `Button::Client` with your [API key](https://app.usebutton.com/settings/organization).
 
 ```ruby
 require 'button'
@@ -26,7 +26,7 @@ require 'button'
 client = Button::Client.new('sk-XXX')
 ```
 
-The client will always attempt to raise a `Button::ButtonClientError` in an error condition. 
+The client will always attempt to raise a `Button::ButtonClientError` in an error condition.
 
 All API requests will return a `Button::Response` instance.  To access the response data, invoke `#data`.
 
@@ -139,7 +139,7 @@ client = Button::Client.new('sk-XXX')
 
 response = client.customers.create({
   id: 'internal-customer-id',
-  email_sha256: 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'
+  email_sha256: Digest::SHA256.hexdigest('user@example.com'.downcase.strip)
 })
 
 puts response
@@ -194,7 +194,11 @@ response = client.orders.create({
   currency: 'USD',
   order_id: '1994',
   finalization_date: '2017-08-02T19:26:08Z',
-  btn_ref: 'srctok-XXX'
+  btn_ref: 'srctok-XXX',
+  customer: {
+    id: 'mycustomer-1234',
+    email_sha256: Digest::SHA256.hexdigest('user@example.com'.downcase.strip)
+  }
 })
 
 puts response
