@@ -83,6 +83,7 @@ We currently expose the following resources to manage:
 * [`Customers`](#customers)
 * [`Merchants`](#merchants)
 * [`Orders`](#orders)
+* [`Links`](#links)
 
 ### Accounts
 
@@ -239,6 +240,42 @@ require 'button'
 client = Button::Client.new('sk-XXX')
 
 response = client.orders.delete('btnorder-XXX')
+
+puts response
+# => Button::Response()
+```
+
+### Links
+
+##### Create
+
+```ruby
+require 'button'
+
+client = Button::Client.new('sk-XXX')
+
+response = client.links.create({
+    url: "https://www.jet.com",
+    experience: {
+        btn_pub_ref: "my-pub-ref",
+        btn_pub_user: "user-id"
+    }
+})
+
+puts response
+# => Button::Response()
+```
+
+##### Get Info
+
+```ruby
+require 'button'
+
+client = Button::Client.new('sk-XXX')
+
+response = client.links.get_info({
+    url: "https://www.jet.com"
+})
 
 puts response
 # => Button::Response()
