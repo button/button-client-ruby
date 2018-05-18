@@ -1,5 +1,5 @@
 Current Version
-  -
+  - Added CODEOWNERS
 
 2.4.0 December 6, 2017
   - Add `Links` resource
