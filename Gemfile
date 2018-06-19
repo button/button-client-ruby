@@ -8,4 +8,5 @@ group :development do
   gem 'rubocop', '0.41.2'
   gem 'test-unit', '3.1.5'
   gem 'webmock', '2.1.0'
+  gem 'parser', '2.4.0.2'
 end
