@@ -2,6 +2,7 @@ require 'button/resources/accounts'
 require 'button/resources/customers'
 require 'button/resources/links'
 require 'button/resources/merchants'
+require 'button/resources/offers'
 require 'button/resources/orders'
 require 'button/errors'
 
@@ -31,6 +32,7 @@ module Button
       @customers = Customers.new(api_key, config_with_defaults)
       @links = Links.new(api_key, config_with_defaults)
       @merchants = Merchants.new(api_key, config_with_defaults)
+      @offers = Offers.new(api_key, config_with_defaults)
       @orders = Orders.new(api_key, config_with_defaults)
     end
 
@@ -45,8 +47,8 @@ module Button
         api_version: config.fetch(:api_version, nil)
       }
     end
-
-    attr_reader :accounts, :customers, :merchants, :orders, :links
+    
+    attr_reader :accounts, :customers, :merchants, :offers, :orders, :links
     private :merge_defaults
   end
 end

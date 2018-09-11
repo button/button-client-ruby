@@ -84,6 +84,7 @@ We currently expose the following resources to manage:
 * [`Merchants`](#merchants)
 * [`Orders`](#orders)
 * [`Links`](#links)
+* [`Offers`](#offers)
 
 ### Accounts
 
@@ -275,6 +276,24 @@ client = Button::Client.new('sk-XXX')
 
 response = client.links.get_info({
     url: "https://www.jet.com"
+})
+
+puts response
+# => Button::Response()
+```
+
+### Offers
+
+##### Get Offers
+
+```ruby
+require 'button'
+
+client = Button::Client.new('sk-XXX')
+
+response = client.offers.get_offers({
+    user_id: "some-user-id",
+    device_ids: ["123"]
 })
 
 puts response
