@@ -20,12 +20,12 @@ class OffersTest < Test::Unit::TestCase
     WebMock.reset!
   end
 
-  def test_get_offers
+  def test_get
     stub_request(:post, 'https://api.usebutton.com/v1/offers')
       .with(body: '{"a":1}', headers: @headers)
       .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "object": { "a": 1 } }')
 
-    response = @offers.get_offers(a: 1)
+    response = @offers.get(a: 1)
     assert_equal(response.data[:a], 1)
   end
 end

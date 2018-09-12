@@ -1,9 +1,9 @@
 Current Version
+  - Added CODEOWNERS
   - Add `Offers` resource
 
 2.4.0 December 6, 2017
   - Add `Links` resource
-  - Added CODEOWNERS
 
 2.3.0 June 22, 2017
   - Add api_version to Client config
