@@ -47,7 +47,7 @@ module Button
         api_version: config.fetch(:api_version, nil)
       }
     end
-    
+
     attr_reader :accounts, :customers, :merchants, :offers, :orders, :links
     private :merge_defaults
   end
