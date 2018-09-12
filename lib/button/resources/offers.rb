@@ -13,7 +13,7 @@ module Button
     # @param [Hash] user to retrieve offers for
     # @return [Button::Response] the API response
     #
-    def get_offers(user)
+    def get(user)
       api_post(path, user)
     end
   end

@@ -291,7 +291,7 @@ require 'button'
 
 client = Button::Client.new('sk-XXX')
 
-response = client.offers.get_offers({
+response = client.offers.get({
     user_id: "some-user-id",
     device_ids: ["123"]
 })
