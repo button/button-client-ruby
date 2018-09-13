@@ -1,5 +1,6 @@
 Current Version
   - Added CODEOWNERS
+  - Add `Offers` resource
 
 2.4.0 December 6, 2017
   - Add `Links` resource
