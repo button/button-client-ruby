@@ -4,6 +4,7 @@ require 'button/resources/links'
 require 'button/resources/merchants'
 require 'button/resources/offers'
 require 'button/resources/orders'
+require 'button/resources/transactions'
 require 'button/errors'
 
 NO_API_KEY_MESSAGE = 'Must provide a Button API key.  Find yours at '\
@@ -34,6 +35,7 @@ module Button
       @merchants = Merchants.new(api_key, config_with_defaults)
       @offers = Offers.new(api_key, config_with_defaults)
       @orders = Orders.new(api_key, config_with_defaults)
+      @tranasactions = Transactions.new(api_key, config_with_defaults)
     end
 
     def merge_defaults(config)
@@ -48,7 +50,7 @@ module Button
       }
     end
 
-    attr_reader :accounts, :customers, :merchants, :offers, :orders, :links
+    attr_reader :accounts, :customers, :merchants, :offers, :orders, :links, :transactions
     private :merge_defaults
   end
 end

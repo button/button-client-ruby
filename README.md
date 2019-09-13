@@ -85,6 +85,7 @@ We currently expose the following resources to manage:
 * [`Orders`](#orders)
 * [`Links`](#links)
 * [`Offers`](#offers)
+* [`Transactions`](#transactions)
 
 ### Accounts
 
@@ -298,6 +299,38 @@ response = client.offers.get({
 
 puts response
 # => Button::Response()
+```
+
+### Transactions
+
+#### All
+
+_n.b. all is a paged endpoint.  Take care to inspect `response.next_cursor` in case there's more data to be read._
+
+Along with the required account id, you may also pass the following optional arguments as a Hash as the second argument:
+
+* `:cursor` (String): An API cursor to fetch a specific set of results.
+* `:start` (ISO-8601 datetime String): Fetch transactions after this time.
+* `:end` (ISO-8601 datetime String): Fetch transactions before this time.
+* `:time_field` (String): Which time field start and end filter on.
+
+```ruby
+require 'button'
+
+client = Button::Client.new('sk-XXX')
+
+response = client.transactions.all
+cursor = response.next_cursor
+
+puts response
+# => Button::Response(75 elements)
+
+# Unpage all results
+#
+while !cursor.nil? do
+  response = client.transactions.all(cursor: cursor)
+  cursor = response.next_cursor
+end
 ```
 
 ## Response
