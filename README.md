@@ -111,6 +111,7 @@ Along with the required account id, you may also pass the following optional arg
 * `:cursor` (String): An API cursor to fetch a specific set of results.
 * `:start` (ISO-8601 datetime String): Fetch transactions after this time.
 * `:end` (ISO-8601 datetime String): Fetch transactions before this time.
+* `:time_field` (String): Which time field start and end filter on.
 
 ```ruby
 require 'button'
@@ -307,7 +308,7 @@ puts response
 
 _n.b. all is a paged endpoint.  Take care to inspect `response.next_cursor` in case there's more data to be read._
 
-Along with the required account id, you may also pass the following optional arguments as a Hash as the second argument:
+You may pass the following optional arguments as a Hash:
 
 * `:cursor` (String): An API cursor to fetch a specific set of results.
 * `:start` (ISO-8601 datetime String): Fetch transactions after this time.

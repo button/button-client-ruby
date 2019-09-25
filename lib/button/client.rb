@@ -35,7 +35,7 @@ module Button
       @merchants = Merchants.new(api_key, config_with_defaults)
       @offers = Offers.new(api_key, config_with_defaults)
       @orders = Orders.new(api_key, config_with_defaults)
-      @tranasactions = Transactions.new(api_key, config_with_defaults)
+      @transactions = Transactions.new(api_key, config_with_defaults)
     end
 
     def merge_defaults(config)

@@ -6,7 +6,6 @@ module Button
   class Transactions < Resource
     # Gets a list of transactions
     #
-    # @param [String] account_id the account id to look up transactions for
     # @option [String] cursor the account id to look up transactions for
     # @option [ISO-8601 datetime String] start The start date to filter
     #   transactions
