@@ -1,4 +1,7 @@
 Current Version
+  -
+
+2.5.0 September 25, 2019
   - Added CODEOWNERS
   - Add `Offers` resource
   - Add `Transactions` resource and time field support
