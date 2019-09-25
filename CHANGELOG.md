@@ -1,6 +1,7 @@
 Current Version
   - Added CODEOWNERS
   - Add `Offers` resource
+  - Add `Transactions` resource and time field support
 
 2.4.0 December 6, 2017
   - Add `Links` resource

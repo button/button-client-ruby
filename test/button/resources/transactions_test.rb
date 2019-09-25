@@ -1,8 +1,8 @@
 require File.expand_path('../../../test_helper', __FILE__)
 
-class Accounts < Test::Unit::TestCase
+class Transactions < Test::Unit::TestCase
   def setup
-    @accounts = Button::Accounts.new(
+    @transactions = Button::Transactions.new(
       'sk-XXX',
       secure: true,
       timeout: nil,
@@ -21,37 +21,27 @@ class Accounts < Test::Unit::TestCase
   end
 
   def test_all
-    stub_request(:get, 'https://api.usebutton.com/v1/affiliation/accounts')
-      .with(headers: @headers)
-      .to_return(status: 200, body: '{ "meta": { "status": "ok" }, "objects": [{ "a": 1 }] }')
-
-    response = @accounts.all
-    assert_equal(response.data.size, 1)
-    assert_equal(response.data[0][:a], 1)
-  end
-
-  def test_transactions
     body = '{ "meta": { "status": "ok", "prev": "https://bloop.net?cursor=1989",'\
            ' "next": "https://bloop.net?cursor=1991" }, "objects": [{ "a": 1 }] }'
-    stub_request(:get, 'https://api.usebutton.com/v1/affiliation/accounts/acc-1/transactions')
+    stub_request(:get, 'https://api.usebutton.com/v1/affiliation/transactions')
       .with(headers: @headers)
       .to_return(status: 200, body: body)
 
-    response = @accounts.transactions('acc-1')
+    response = @transactions.all
     assert_equal(response.data.size, 1)
     assert_equal(response.data[0][:a], 1)
     assert_equal(response.prev_cursor, '1989')
     assert_equal(response.next_cursor, '1991')
   end
 
-  def test_transactions_with_cursor
+  def test_all_with_cursor
     body = '{ "meta": { "status": "ok", "prev": "https://bloop.net?cursor=1989",'\
            ' "next": "https://bloop.net?cursor=1991" }, "objects": [{ "a": 1 }] }'
-    stub_request(:get, 'https://api.usebutton.com/v1/affiliation/accounts/acc-1/transactions?cursor=1989')
+    stub_request(:get, 'https://api.usebutton.com/v1/affiliation/transactions?cursor=1989')
       .with(headers: @headers)
       .to_return(status: 200, body: body)
 
-    response = @accounts.transactions('acc-1', cursor: '1989')
+    response = @transactions.all(cursor: '1989')
     assert_equal(response.data.size, 1)
     assert_equal(response.data[0][:a], 1)
   end
@@ -59,12 +49,12 @@ class Accounts < Test::Unit::TestCase
   def test_transactions_with_start_end_and_time_field
     body = '{ "meta": { "status": "ok", "prev": "https://bloop.net?cursor=1989",'\
            ' "next": "https://bloop.net?cursor=1991" }, "objects": [{ "a": 1 }] }'
-    stub_request(:get, 'https://api.usebutton.com/v1/affiliation/accounts/acc-1/transactions?end=2014-01-01&start=2012-01-01&time_field=modified_date')
+    stub_request(:get, 'https://api.usebutton.com/v1/affiliation/transactions?end=2014-01-01&start=2012-01-01&time_field=modified_date')
       .with(headers: @headers)
       .to_return(status: 200, body: body)
 
-    response = @accounts.transactions('acc-1', start: '2012-01-01', end: '2014-01-01',
-                                               time_field: Button::Constants::TIME_FIELD_MODIFIED)
+    response = @transactions.all(start: '2012-01-01', end: '2014-01-01',
+                                 time_field: Button::Constants::TIME_FIELD_MODIFIED)
     assert_equal(response.data.size, 1)
     assert_equal(response.data[0][:a], 1)
   end
